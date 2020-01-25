@@ -37,7 +37,6 @@ app.post('/tmd_slack_notification_long', (req, res) => {
 });
 
 slackInteractions.action({type:'button'}, (payload, respond) => {
-    console.log('button');
     actions.onButtonAction(payload, respond);
 });
 
