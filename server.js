@@ -4,7 +4,7 @@ const {createMessageAdapter} = require('@slack/interactive-messages');
 const {WebClient} = require('@slack/web-api');
 const app = require('express')();
 require('dotenv').config();
-const {bodyParser} = require('body-parser');
+const bodyParser = require('body-parser');
 
 if (!process.env.SLACK_BOT_TOKEN || !process.env.SLACK_SIGNING_SECRET) {
     throw 'Environment variables not properly loaded!';
