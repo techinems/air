@@ -42,12 +42,10 @@ class NotificationHelper {
             {
                 type: 'section',
                 block_id: 'night',
-                fields: [
-                    {
-                        type: 'plain_text',
-                        text: 'Night crew call. No response is needed.'
-                    }
-                ]
+                text: {
+                    type: 'plain_text',
+                    text: 'Night crew call. No response is needed.'
+                }
             }
         ];
     }
@@ -56,27 +54,25 @@ class NotificationHelper {
         return {
             type: 'section',
             block_id: 'dispatch',
-            fields: [
-                {
-                    type: 'mrkdwn',
-                    text: `RPI Ambulance dispatched on
-                     ${this.makeDate()}\n*${req.body.dispatch}*`
-                }
-            ]
+            text: {
+                type: 'mrkdwn',
+                text: 'RPI Ambulance dispatched on ' +
+                    `${this.makeDate()}\n*${req.body.dispatch}*`
+            }
         };
     }
     static longtoneMessage(req) {
-        return {
-            type: 'section',
-            block_id: 'longtone',
-            fields: [
-                {
+        return [
+            {
+                type: 'section',
+                block_id: 'longtone',
+                text: {
                     type: 'mrkdwn',
-                    text: `Rensslaer County longtone on
-                     ${this.makeDate()}\n*${req.body.dispatch}*`
+                    text: 'Rensslaer County longtone on ' +
+                        `${this.makeDate()}\n*${req.body.dispatch}*`
                 }
-            ]
-        };
+            }
+        ];
     }
 
     static compareTime(hr, min, direction) {
