@@ -2,6 +2,7 @@ const {Notifications} = require('./utilities/Notifications');
 const {Actions} = require('./utilities/Actions');
 const {createMessageAdapter} = require('@slack/interactive-messages');
 const {WebClient} = require('@slack/web-api');
+const {Verification} = require('./middleware/Verification');
 const app = require('express')();
 require('dotenv').config();
 const bodyParser = require('body-parser');
@@ -27,6 +28,9 @@ app.use('/slack/actions', slackInteractions.expressMiddleware());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+    Verification.verification(req, res, next);
+});
 
 app.post('/tmd_slack_notification', (req, res) => {
     notifications.normal(req, res);

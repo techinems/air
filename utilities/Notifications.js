@@ -4,7 +4,6 @@ require('dotenv').config();
 
 const AIR_CHANNEL = process.env.AIR_CHANNEL;
 const DISPATCH_CHANNEL = process.env.DISPATCH_CHANNEL;
-const VERIFICATION = process.env.VERIFICATION_TOKEN;
 const NC_START = process.env.NIGHT_CREW_START;
 const NC_END = process.env.NIGHT_CREW_END;
 
@@ -20,31 +19,22 @@ class Notifications {
     }
 
     normal(req, res) {
-        if (req.body.verification === VERIFICATION) {
-            if (NC_START && NC_END &&
-                NotificationHelper.verifyNightCrew(NC_START, NC_END)) {
-                this.postMessage(AIR_CHANNEL, NotificationHelper.nightCall(req));
-                this.postMessage(DISPATCH_CHANNEL, NotificationHelper.nightCall(req));
-            } else {
-                this.postMessage(AIR_CHANNEL, NotificationHelper.dayCall(req));
-                this.postMessage(DISPATCH_CHANNEL,
-                    [NotificationHelper.dispatchMessage(req)]);
-            }
-            res.status(200).send();
+        if (NC_START && NC_END &&
+            NotificationHelper.verifyNightCrew(NC_START, NC_END)) {
+            this.postMessage(AIR_CHANNEL, NotificationHelper.nightCall(req));
+            this.postMessage(DISPATCH_CHANNEL, NotificationHelper.nightCall(req));
         } else {
-            res.status(401).send();
+            this.postMessage(AIR_CHANNEL, NotificationHelper.dayCall(req));
+            this.postMessage(DISPATCH_CHANNEL,
+                [NotificationHelper.dispatchMessage(req)]);
         }
+        res.status(200).send();
     }
 
     longtone(req, res) {
-        if (req.body.verification === VERIFICATION) {
-            this.postMessage(AIR_CHANNEL, NotificationHelper.longtoneMessage(req));
-            this.postMessage(DISPATCH_CHANNEL, NotificationHelper.longtoneMessage(req));
-            res.status(200).send();
-        }
-        else {
-            res.status(401).send();
-        }
+        this.postMessage(AIR_CHANNEL, NotificationHelper.longtoneMessage(req));
+        this.postMessage(DISPATCH_CHANNEL, NotificationHelper.longtoneMessage(req));
+        res.status(200).send();
     }
 }
 
