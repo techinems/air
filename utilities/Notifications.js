@@ -30,6 +30,7 @@ class Notifications {
                 this.postMessage(DISPATCH_CHANNEL,
                     [NotificationHelper.dispatchMessage(req)]);
             }
+            res.status(200).send();
         } else {
             res.status(401).send();
         }
@@ -39,6 +40,7 @@ class Notifications {
         if (req.body.verification === VERIFICATION) {
             this.postMessage(AIR_CHANNEL, NotificationHelper.longtoneMessage(req));
             this.postMessage(DISPATCH_CHANNEL, NotificationHelper.longtoneMessage(req));
+            res.status(200).send();
         }
         else {
             res.status(401).send();
