@@ -57,7 +57,7 @@ class NotificationHelper {
             text: {
                 type: 'mrkdwn',
                 text: 'RPI Ambulance dispatched on ' +
-                    `${this.makeDate()}\n*${req.body.dispatch}*`
+                    `${this.getCurrentTime()}\n*${req.body.dispatch}*`
             }
         };
     }
@@ -69,40 +69,30 @@ class NotificationHelper {
                 text: {
                     type: 'mrkdwn',
                     text: 'Rensslaer County longtone on ' +
-                        `${this.makeDate()}\n*${req.body.dispatch}*`
+                        `${this.getCurrentTime()}\n*${req.body.dispatch}*`
                 }
             }
         ];
     }
 
-    static compareTime(hr, min, direction) {
-
+    static verifyNightCrew(start_time, end_time) {
+        const start_time_list = start_time.split(':');
+        const end_time_list = end_time.split(':');
         const now = new Date();
-        const nowhr = now.getHours();
-        const nowmin = now.getMinutes();
+        const start = new Date();
+        start.setHours(parseInt(start_time_list[0]), parseInt(start_time_list[1]), 0);
+        const end = new Date();
+        end.setDate(start.getDate()+1);
+        end.setHours(parseInt(end_time_list[0]), parseInt(end_time_list[1]), 0);
+        return now > start && now < end;
 
-        if (direction === 'lt') {
-            return (nowhr < hr) || ((nowhr === hr) && (nowmin < min));
-        } else if (direction === 'gt') {
-            return (nowhr > hr) || ((nowhr === hr) && (nowmin > min));
-        }
     }
 
-    static makeDate() {
+    static getCurrentTime() {
         const now = new Date();
-        return [
-            now.getFullYear(),
-            '-',
-            now.getMonth() + 1 < 10 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1),
-            '-',
-            now.getDate() < 10 ? '0' + (now.getDate()) : (now.getDate()),
-            ' at ',
-            now.getHours() < 10 ? '0' + (now.getHours()) : (now.getHours()),
-            ':',
-            now.getMinutes() < 10 ? '0' + (now.getMinutes()) : (now.getMinutes()),
-            ':',
-            now.getSeconds() < 10 ? '0' + (now.getSeconds()) : (now.getSeconds())
-        ].join('');
+        return new Date(now.getTime() - (now.getTimezoneOffset() * 60000 ))
+            .toISOString().split('T')[0] + ' at '
+            + now.toTimeString().split(' ')[0];
     }
 }
 

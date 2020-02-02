@@ -5,6 +5,8 @@ require('dotenv').config();
 const AIR_CHANNEL = process.env.AIR_CHANNEL;
 const DISPATCH_CHANNEL = process.env.DISPATCH_CHANNEL;
 const VERIFICATION = process.env.VERIFICATION_TOKEN;
+const NC_START = process.env.NIGHT_CREW_START;
+const NC_END = process.env.NIGHT_CREW_END;
 
 class Notifications {
     constructor(webclient) {
@@ -19,14 +21,14 @@ class Notifications {
 
     normal(req, res) {
         if (req.body.verification === VERIFICATION) {
-            if (NotificationHelper.compareTime(5, 55, 'gt')
-                && NotificationHelper.compareTime(18, 5, 'lt')) {
+            if (NC_START && NC_END &&
+                NotificationHelper.verifyNightCrew(NC_START, NC_END)) {
+                this.postMessage(AIR_CHANNEL, NotificationHelper.nightCall(req));
+                this.postMessage(DISPATCH_CHANNEL, NotificationHelper.nightCall(req));
+            } else {
                 this.postMessage(AIR_CHANNEL, NotificationHelper.dayCall(req));
                 this.postMessage(DISPATCH_CHANNEL,
                     [NotificationHelper.dispatchMessage(req)]);
-            } else {
-                this.postMessage(AIR_CHANNEL, NotificationHelper.nightCall(req));
-                this.postMessage(DISPATCH_CHANNEL, NotificationHelper.nightCall(req));
             }
         } else {
             res.status(401).send();
