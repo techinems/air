@@ -11,7 +11,6 @@ class Email {
         data.shift();
         REGEX.split('|')
             .forEach((key, i) => result[key] = data[i]);
-        console.log(result);
         return result;
     }
 
