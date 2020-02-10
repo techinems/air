@@ -10,10 +10,14 @@ class Notifications {
         this.web = webclient;
     }
 
-    postMessage(channel, blocks, unfurl_links=true, color='#F35A00') {
-        const msg = {channel:channel, attachments:[{color:color, blocks:blocks}],
-            unfurl_links:unfurl_links};
+    postMessage(channel, blocks,color='#F35A00') {
+        const msg = {channel:channel, attachments:[{color:color, blocks:blocks}]};
         return this.web.chat.postMessage(msg);
+    }
+
+    updateMessage(channel, ts, blocks, color='#F35A00') {
+        const msg = {channel, ts, attachments:[{color, blocks}]};
+        return this.web.chat.update(msg);
     }
 
     normal(req, res) {
@@ -22,8 +26,8 @@ class Notifications {
             this.postMessage(DISPATCH_CHANNEL, NotificationHelper.nightCall(req));
         } else {
             this.postMessage(AIR_CHANNEL, NotificationHelper.dayCall(req));
-            this.postMessage(DISPATCH_CHANNEL,
-                [NotificationHelper.dispatchMessage(req)]);
+            this.postMessage(DISPATCH_CHANNEL, [NotificationHelper.dispatchTime(),
+                NotificationHelper.dispatchMessage(req)]);
         }
         res.status(200).send();
     }
@@ -35,16 +39,12 @@ class Notifications {
     }
 
     email(data) {
-        if (NotificationHelper.verifyNightCrew()) {
-            this.postMessage(AIR_CHANNEL, NotificationHelper.nightCall(data, true));
-            this.postMessage(DISPATCH_CHANNEL, NotificationHelper.nightCall(data, true));
-        } else {
-            this.postMessage(AIR_CHANNEL, NotificationHelper.dayCall(data, true));
-            this.postMessage(DISPATCH_CHANNEL,
-                [NotificationHelper.emailMessage(data)]);
-        }
+        this.web.conversations.history({channel:AIR_CHANNEL, limit:1}).then((result) => {
+            const blocks =result.messages[0].attachments[0].blocks;
+            blocks[1] = NotificationHelper.emailMessage(data);
+            this.updateMessage(AIR_CHANNEL, result.messages[0].ts, blocks);
+        });
     }
-
 }
 
 module.exports = Notifications;
