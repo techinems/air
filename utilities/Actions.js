@@ -59,4 +59,4 @@ class Actions {
     }
 }
 
-module.exports = {Actions};
+module.exports = Actions;

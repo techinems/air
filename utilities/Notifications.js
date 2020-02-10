@@ -4,8 +4,6 @@ require('dotenv').config();
 
 const AIR_CHANNEL = process.env.AIR_CHANNEL;
 const DISPATCH_CHANNEL = process.env.DISPATCH_CHANNEL;
-const NC_START = process.env.NIGHT_CREW_START;
-const NC_END = process.env.NIGHT_CREW_END;
 
 class Notifications {
     constructor(webclient) {
@@ -19,8 +17,7 @@ class Notifications {
     }
 
     normal(req, res) {
-        if (NC_START && NC_END &&
-            NotificationHelper.verifyNightCrew(NC_START, NC_END)) {
+        if (NotificationHelper.verifyNightCrew()) {
             this.postMessage(AIR_CHANNEL, NotificationHelper.nightCall(req));
             this.postMessage(DISPATCH_CHANNEL, NotificationHelper.nightCall(req));
         } else {
@@ -36,6 +33,18 @@ class Notifications {
         this.postMessage(DISPATCH_CHANNEL, NotificationHelper.longtoneMessage(req));
         res.status(200).send();
     }
+
+    email(data) {
+        if (NotificationHelper.verifyNightCrew()) {
+            this.postMessage(AIR_CHANNEL, NotificationHelper.nightCall(data, true));
+            this.postMessage(DISPATCH_CHANNEL, NotificationHelper.nightCall(data, true));
+        } else {
+            this.postMessage(AIR_CHANNEL, NotificationHelper.dayCall(data, true));
+            this.postMessage(DISPATCH_CHANNEL,
+                [NotificationHelper.emailMessage(data)]);
+        }
+    }
+
 }
 
-module.exports = {Notifications};
+module.exports = Notifications;

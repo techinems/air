@@ -1,9 +1,11 @@
 const {Notifications} = require('./utilities/Notifications');
 const {Actions} = require('./utilities/Actions');
+const {Email} = require('./utilities/Email');
 const {createMessageAdapter} = require('@slack/interactive-messages');
 const {WebClient} = require('@slack/web-api');
 const {Verification} = require('./middleware/Verification');
 const app = require('express')();
+const nodeMailin = require('node-mailin');
 require('dotenv').config();
 const bodyParser = require('body-parser');
 
@@ -44,3 +46,15 @@ slackInteractions.action({type:'button'}, (payload, respond) => {
     actions.onButtonAction(payload, respond);
 });
 
+nodeMailin.start({
+    port: 25
+});
+
+// eslint-disable-next-line require-await
+nodeMailin.on('validateSender', async (session, address, callback) => {
+    Email.verifySender(address, callback);
+});
+
+nodeMailin.on('message', (connection, data) => {
+    Email.parseEmail(data.text);
+});
