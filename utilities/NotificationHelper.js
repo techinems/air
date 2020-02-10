@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const NC_START = process.env.NIGHT_CREW_START;
 const NC_END = process.env.NIGHT_CREW_END;
+const ORDER = process.env.MESSAGE_ORDER;
 
 class NotificationHelper {
     static dayCall(data, email = false) {
@@ -54,9 +55,12 @@ class NotificationHelper {
 
     static emailMessage(data) {
         let text = `RPI Ambulance dispatched on ${this.getCurrentTime()} \n`;
-        for (let key in data) {
-            text += `${key}: ${data[key]}\n`;
-        }
+        const order = ORDER.split('|');
+        order.forEach((key) => {
+            if (data[key]) {
+                text += `${key}: ${data[key]}\n`;
+            }
+        });
         return this.buildSectionBlock('email', text);
     }
 
@@ -75,13 +79,12 @@ class NotificationHelper {
         end.setHours(parseInt(end_time_list[0]), parseInt(end_time_list[1]), 0);
         return now.toLocaleTimeString() > start.toLocaleTimeString()
             || now.toLocaleTimeString() < end.toLocaleTimeString();
-
     }
 
     static getCurrentTime() {
         const now = new Date();
         return new Date(now.getTime() - (now.getTimezoneOffset() * 60000 ))
-                .toISOString().split('T')[0] + ' at '
+            .toISOString().split('T')[0] + ' at '
             + now.toTimeString().split(' ')[0];
     }
 }
