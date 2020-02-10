@@ -9,8 +9,9 @@ class Email {
         const data = message.trim().split(regex);
         const result = {};
         data.shift();
-        REGEX.replace('\\', '').split('|')
+        REGEX.split('|')
             .forEach((key, i) => result[key] = data[i]);
+        console.log(result);
         return result;
     }
 

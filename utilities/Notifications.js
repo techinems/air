@@ -1,4 +1,4 @@
-const {NotificationHelper} = require('./NotificationHelper');
+const NotificationHelper = require('./NotificationHelper');
 
 require('dotenv').config();
 

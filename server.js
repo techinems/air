@@ -1,17 +1,22 @@
-const {Notifications} = require('./utilities/Notifications');
-const {Actions} = require('./utilities/Actions');
-const {Email} = require('./utilities/Email');
+//global packages
 const {createMessageAdapter} = require('@slack/interactive-messages');
 const {WebClient} = require('@slack/web-api');
 const {Verification} = require('./middleware/Verification');
-const app = require('express')();
 const nodeMailin = require('node-mailin');
 require('dotenv').config();
+const app = require('express')();
 const bodyParser = require('body-parser');
+
+//local packages
+const Notifications = require('./utilities/Notifications');
+const Actions = require('./utilities/Actions');
+const Email = require('./utilities/Email');
 
 if (!process.env.SLACK_BOT_TOKEN || !process.env.SLACK_SIGNING_SECRET) {
     throw 'Environment variables not properly loaded!';
 }
+
+//globals
 const TOKEN = process.env.SLACK_BOT_TOKEN;
 const PORT = process.env.NODE_PORT || 80;
 const SECRET = process.env.SLACK_SIGNING_SECRET;
@@ -56,5 +61,6 @@ nodeMailin.on('validateSender', async (session, address, callback) => {
 });
 
 nodeMailin.on('message', (connection, data) => {
-    Email.parseEmail(data.text);
+    notifications.email(Email.parseEmail(data.text));
 });
+

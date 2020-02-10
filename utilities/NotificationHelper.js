@@ -53,7 +53,7 @@ class NotificationHelper {
     }
 
     static emailMessage(data) {
-        let text = '\n';
+        let text = `RPI Ambulance dispatched on ${this.getCurrentTime()} \n`;
         for (let key in data) {
             text += `${key}: ${data[key]}\n`;
         }
