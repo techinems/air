@@ -44,8 +44,12 @@ class NotificationHelper {
     }
 
     static dispatchMessage(req) {
-        return this.buildSectionBlock('dispatch', 'RPI Ambulance dispatched ' +
-            `on ${this.getCurrentTime()}\n*${req.body.dispatch}*`);
+        return this.buildSectionBlock('dispatch', req.body.dispatch);
+    }
+
+    static dispatchTime() {
+        return this.buildSectionBlock('time', 'RPI Ambulance dispatched ' +
+            `on ${this.getCurrentTime()}`);
     }
 
     static longtoneMessage(req) {
@@ -54,7 +58,7 @@ class NotificationHelper {
     }
 
     static emailMessage(data) {
-        let text = `RPI Ambulance dispatched on ${this.getCurrentTime()} \n`;
+        let text = '';
         const order = ORDER.split('|');
         order.forEach((key) => {
             if (data[key]) {
