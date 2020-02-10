@@ -5,9 +5,10 @@ const NC_END = process.env.NIGHT_CREW_END;
 const ORDER = process.env.MESSAGE_ORDER;
 
 class NotificationHelper {
-    static dayCall(data, email = false) {
+    static dayCall(req) {
         return [
-            email ? this.emailMessage(data) : this.dispatchMessage(data),
+            this.dispatchTime(),
+            this.dispatchMessage(req),
             this.buildSectionBlock('day', 'Are you responding?'),
             {
                 type: 'actions',
@@ -36,9 +37,10 @@ class NotificationHelper {
         ];
     }
 
-    static nightCall(data, email = false) {
+    static nightCall(req) {
         return [
-            email ? this.emailMessage(data) : this.dispatchMessage(data),
+            this.dispatchTime(),
+            this.dispatchMessage(req),
             this.buildSectionBlock('night', 'Night crew call. No response is needed.')
         ];
     }
