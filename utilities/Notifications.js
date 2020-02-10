@@ -11,7 +11,7 @@ class Notifications {
     }
 
     postMessage(channel, blocks,color='#F35A00') {
-        const msg = {channel:channel, attachments:[{color:color, blocks:blocks}]};
+        const msg = {channel, attachments:[{color, blocks}]};
         return this.web.chat.postMessage(msg);
     }
 
