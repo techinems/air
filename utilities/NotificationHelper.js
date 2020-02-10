@@ -1,3 +1,4 @@
+const SlackIntegrationHelper = require('./SlackIntegrationHelper');
 require('dotenv').config();
 
 const NC_START = process.env.NIGHT_CREW_START;
@@ -8,30 +9,13 @@ class NotificationHelper {
     static dayCall(req) {
         return [
             this.dispatchTime(),
-            this.dispatchMessage(req),
-            this.buildSectionBlock('day', 'Are you responding?'),
+            this.normalMessage(req),
+            SlackIntegrationHelper.buildSectionBlock('day', 'Are you responding?'),
             {
                 type: 'actions',
                 elements: [
-                    {
-                        type: 'button',
-                        text: {
-                            type: 'plain_text',
-                            text: 'Yes',
-                            emoji: false
-                        },
-                        action_id: 'statusYes',
-                        style: 'danger'
-                    },
-                    {
-                        type: 'button',
-                        text: {
-                            type: 'plain_text',
-                            text: 'No',
-                            emoji: false
-                        },
-                        action_id: 'statusNo',
-                    }
+                    SlackIntegrationHelper.buildButton('statusYes', 'Yes', 'danger'),
+                    SlackIntegrationHelper.buildButton('statusNo', 'No'),
                 ]
             }
         ];
@@ -40,23 +24,25 @@ class NotificationHelper {
     static nightCall(req) {
         return [
             this.dispatchTime(),
-            this.dispatchMessage(req),
-            this.buildSectionBlock('night', 'Night crew call. No response is needed.')
+            this.normalMessage(req),
+            SlackIntegrationHelper.buildSectionBlock('night',
+                'Night crew call. No response is needed.')
         ];
     }
 
-    static dispatchMessage(req) {
-        return this.buildSectionBlock('dispatch', req.body.dispatch);
+    static normalMessage(req) {
+        return SlackIntegrationHelper.buildSectionBlock('dispatch', req.body.dispatch);
     }
 
     static dispatchTime() {
-        return this.buildSectionBlock('time', 'RPI Ambulance dispatched ' +
-            `on ${this.getCurrentTime()}`);
+        return SlackIntegrationHelper.buildSectionBlock('time',
+            `RPI Ambulance dispatched on ${this.getCurrentTime()}`);
     }
 
     static longtoneMessage(req) {
-        return [this.buildSectionBlock('longtone', 'Rensslaer County longtone on ' +
-            `${this.getCurrentTime()}\n*${req.body.dispatch}*`)];
+        return [SlackIntegrationHelper.buildSectionBlock('longtone',
+            `Rensslaer County longtone on 
+            ${this.getCurrentTime()}\n*${req.body.dispatch}*`)];
     }
 
     static emailMessage(data) {
@@ -67,11 +53,7 @@ class NotificationHelper {
                 text += `${key}: ${data[key]}\n`;
             }
         });
-        return this.buildSectionBlock('email', text);
-    }
-
-    static buildSectionBlock(block_id, text) {
-        return {type: 'section', block_id, text: {type: 'mrkdwn', text}};
+        return SlackIntegrationHelper.buildSectionBlock('email', text);
     }
 
     static verifyNightCrew() {
