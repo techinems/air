@@ -79,11 +79,11 @@ class NotificationHelper {
         const start_time_list = NC_START.split(':');
         const end_time_list = NC_END.split(':');
         const now = new Date();
-        const hr = now.getHours();
-        const min = now.getMinutes();
-        return ((hr < end_time_list[0]) || ((hr == end_time_list[0]) &&
-            (min < end_time_list[0]))) && ((hr > start_time_list[0]) ||
-            ((hr == start_time_list[0]) && (min > start_time_list[0])));
+        const start = new Date();
+        start.setHours(parseInt(start_time_list[0]), parseInt(start_time_list[1]), 0);
+        const end = new Date();
+        end.setHours(parseInt(end_time_list[0]), parseInt(end_time_list[1]), 0);
+        return !(now < start && now > end);
     }
 
     static getCurrentTime() {
