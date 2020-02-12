@@ -12,7 +12,6 @@ class SlackIntegration {
         return this.web.chat.postMessage(msg);
     }
 
-
     updateSlackMessage(channel, ts, blocks, color='#F35A00') {
         const msg = {channel, ts, attachments:[{color, blocks}]};
         return this.web.chat.update(msg);

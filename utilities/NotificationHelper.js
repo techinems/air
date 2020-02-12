@@ -1,4 +1,5 @@
 const SlackIntegrationHelper = require('./SlackIntegrationHelper');
+
 require('dotenv').config();
 
 const NC_START = process.env.NIGHT_CREW_START;
