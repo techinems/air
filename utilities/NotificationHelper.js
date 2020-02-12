@@ -65,7 +65,7 @@ class NotificationHelper {
         start.setHours(parseInt(start_time_list[0]), parseInt(start_time_list[1]), 0);
         const end = new Date();
         end.setHours(parseInt(end_time_list[0]), parseInt(end_time_list[1]), 0);
-        return !(now < start && now > end);
+        return now < start || now > end;
     }
 
     static getCurrentTime() {
