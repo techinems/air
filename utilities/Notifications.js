@@ -7,7 +7,6 @@ const AIR_CHANNEL = process.env.AIR_CHANNEL;
 const DISPATCH_CHANNEL = process.env.DISPATCH_CHANNEL;
 
 class Notifications extends SlackIntegration {
-
     normal(req, res) {
         if (NotificationHelper.verifyNightCrew()) {
             this.postSlackMessage(AIR_CHANNEL, NotificationHelper.nightCall(req));
@@ -31,6 +30,12 @@ class Notifications extends SlackIntegration {
             result.messages[0].attachments[0].blocks[1] =
                 NotificationHelper.emailMessage(data);
             this.updateSlackMessageMA(AIR_CHANNEL, result.messages[0].ts,
+                result.messages[0].attachments);
+        });
+        this.getlatestSlackMessage(DISPATCH_CHANNEL).then((result) => {
+            result.messages[0].attachments[0].blocks[1] =
+                NotificationHelper.emailMessage(data, true);
+            this.updateSlackMessageMA(DISPATCH_CHANNEL, result.messages[0].ts,
                 result.messages[0].attachments);
         });
     }

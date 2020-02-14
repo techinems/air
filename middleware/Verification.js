@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 const VERIFICATION = process.env.VERIFICATION_TOKEN;
 
 class Verification {

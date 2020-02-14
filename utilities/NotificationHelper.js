@@ -4,7 +4,8 @@ require('dotenv').config();
 
 const NC_START = process.env.NIGHT_CREW_START;
 const NC_END = process.env.NIGHT_CREW_END;
-const ORDER = process.env.MESSAGE_ORDER;
+const AIR_ORDER = process.env.AIR_MESSAGE_ORDER;
+const DISPATCH_ORDER = process.env.DISPATCH_MESSAGE_ORDER;
 
 class NotificationHelper {
     static dayCall(req) {
@@ -46,9 +47,9 @@ class NotificationHelper {
             ${this.getCurrentTime()}\n*${req.body.dispatch}*`)];
     }
 
-    static emailMessage(data) {
+    static emailMessage(data,dispatch=false) {
         let text = '';
-        const order = ORDER.split('|');
+        const order = dispatch ? DISPATCH_ORDER.split('|') : AIR_ORDER.split('|');
         order.forEach((key) => {
             if (data[key]) {
                 text += `${key}: ${data[key]}\n`;

@@ -35,7 +35,7 @@ class SlackIntegration {
     }
 
     async getSlackUser(user) {
-        return await this.web.users.info({user})
+        return await this.web.users.info({user});
     }
 
 }
