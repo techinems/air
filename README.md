@@ -1,18 +1,23 @@
 # Am I Responding
+
 AIR provides IAmResponding-type functionality for free and within a Slack team. It utilizes Slack's bot users API to post an interactive message when a call is dispatched. 
 
 If your agency receives email dispatches, the email information can be attached to the Slack message.
 
 There are two channels that AIR will post in. The first channel is where a dispatch message will be posted and people can click the buttons to respond or not. The second channel will only post the dispatch message, and is optional.
-##Configuration
+## Configuration
+
 Base setup for AIR is easy and straightforward, and is similar to other self-hosted Slack integrations.
-###Basic Setup
+### Basic Setup
+
 #### Assumptions
+
 1. A domain or subdomain is pointing to AIR and the correct port. Unfortunately, since every user's configuration is slightly different, we are unable to provide a complete set of instructions to do this. However, a quick search should be able to bring up a guide if needed for your agency's specific setup.
 2. A way to detect a dispatch and send out a GET request to AIR. Again, every agency has their own setup so we are unable to provide instructions on how to do this. Here are RPI Ambulance, we use a combination of [Two Tone Detect](https://www.twotonedetect.net/) and [Slack Tones](https://github.com/rpiambulance/slack-tones).
 
 
 #### Slack
+
 1. Head over to [Slack's app portal](https://api.slack.com/apps), and create a new app.
 1. Click on the green "Create New App" button.
 1. Name your Slack app, select your agency's workspace, and select "Create App".
@@ -37,6 +42,7 @@ Base setup for AIR is easy and straightforward, and is similar to other self-hos
 
 
 #### Dispatch Detection Application
+
 Setup the GET request to use the following structure: 
 
 `{ "verification":"<VERIFICATION TOKEN">, "dispatch":"<MESSAGE>"}`
@@ -45,9 +51,11 @@ VERIFICATION TOKEN - This will be the token used to verify the dispatch message 
 MESSAGE - This will be the message that will be posted to both the AIR and DISPATCH channels.
 
 #### AIR .env File
+
 This is the main configuration file for AIR. We have split up the file into different sections for easy setup. Everything in this section will be in the `#Basic Setup` section.
 
-#####Configuation
+##### Configuation
+
 NODE_PORT: The port that AIR will run on. This should be the same as the port the domain/subdomain is pointing to.
 
 SLACK_BOT_TOKEN: The Slack "Bot User OAuth Access Token" that we took note of earlier.
@@ -68,25 +76,31 @@ TZ: The timezone where the agency is. Ex: America/New York
 
 **Congrats!** Once completed, AIR should be good to go. Run the `npm install` and then `npm start` command to start the program. 
 
-###Optional Features
+### Optional Features
+
 These features are completely optional and will be dependent on how your agency is run. All variables can be found in the .env file under `#Optional Features`.
 
-####Night Crew
+#### Night Crew
+
 If there is a dedicated crew for night shifts, this feature will turn off the responding buttons and state that the night crew is handling the call.
 
-#####Configuration
+##### Configuration
+
 Under `#Night Crew`:
 
 NIGHT_CREW_START: The start time of the night crew. This will be in military time. Ex: 18:00
 NIGHT_CREW_END: The end time of the night crew. This will be in military time. Ex: 6:00
 
-####Email
+#### Email
+
 If the agency receives email dispatches, this feature will update the initial messages with the information from the email in any order.
 
-#####Assumption
+##### Assumption
+
 Setup of records to point incoming email messages to of a domain to point port 25 of AIR.
 
-#####Configuration
+##### Configuration
+
 Under `#Email`:
 
 DISPATCH_EMAIL_ADDRESS: The email address of the dispatcher. This is to verify that the email is a dispatch message.
