@@ -47,7 +47,7 @@ class NotificationHelper {
             ${this.getCurrentTime()}\n*${req.body.dispatch}*`)];
     }
 
-    static emailMessage(data,dispatch=false) {
+    static emailMessage(data, dispatch=false) {
         let text = '';
         const order = dispatch ? DISPATCH_ORDER.split('|') : AIR_ORDER.split('|');
         order.forEach((key) => {

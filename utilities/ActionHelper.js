@@ -11,6 +11,7 @@ class ActionHelper {
         });
         return attachments;
     }
+
     static getFormattedName(user) {
         let name = user.real_name;
         switch (NAME_FORMAT.toLowerCase()) {
