@@ -1,5 +1,5 @@
 # Am I Responding
-
+    
 AIR provides IAmResponding-type functionality for free and within a Slack team. It utilizes Slack's bot users API to post an interactive message when a call is dispatched. 
 
 If your agency receives email dispatches, the email information can be attached to the Slack message.
@@ -113,6 +113,7 @@ AIR_MESSAGE_ORDER: The order you want the message for the responding channel to 
 
 Ex: `CALL TYPE|LOCATION|ADDRESS|CROSS STREETS|LATITUDE|LONGITUDE|INCIDENT`
 
-DISPATCH_MESSAGE_ORDER: The order you want the message for the dispatch channel to be in. These should be split apart by `|` and have the same values as the `EMAIL_SPLIT_REGEX`. Ex: 
-`CALL TYPE|LOCATION|ADDRESS|CROSS STREETS`
+DISPATCH_MESSAGE_ORDER: The order you want the message for the dispatch channel to be in. These should be split apart by `|` and have the same values as the `EMAIL_SPLIT_REGEX`. 
+
+Ex: `CALL TYPE|LOCATION|ADDRESS|CROSS STREETS`
 
