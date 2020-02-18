@@ -7,22 +7,23 @@ const AIR_CHANNEL = process.env.AIR_CHANNEL;
 const DISPATCH_CHANNEL = process.env.DISPATCH_CHANNEL;
 
 class Notifications extends SlackIntegration {
-    normal(req, res) {
+    normal(req) {
         if (NotificationHelper.verifyNightCrew()) {
             this.postSlackMessage(AIR_CHANNEL, NotificationHelper.nightCall(req));
+            if (!DISPATCH_CHANNEL) return;
             this.postSlackMessage(DISPATCH_CHANNEL, NotificationHelper.nightCall(req));
         } else {
             this.postSlackMessage(AIR_CHANNEL, NotificationHelper.dayCall(req));
+            if (!DISPATCH_CHANNEL) return;
             this.postSlackMessage(DISPATCH_CHANNEL, [NotificationHelper.dispatchTime(),
                 NotificationHelper.normalMessage(req)]);
         }
-        res.status(200).send();
     }
 
-    longtone(req, res) {
+    longtone(req) {
         this.postSlackMessage(AIR_CHANNEL, NotificationHelper.longtoneMessage(req));
+        if (!DISPATCH_CHANNEL) return;
         this.postSlackMessage(DISPATCH_CHANNEL, NotificationHelper.longtoneMessage(req));
-        res.status(200).send();
     }
 
     email(data) {
@@ -32,6 +33,7 @@ class Notifications extends SlackIntegration {
             this.updateSlackMessageMA(AIR_CHANNEL, result.messages[0].ts,
                 result.messages[0].attachments);
         });
+        if (!DISPATCH_CHANNEL) return;
         this.getlatestSlackMessage(DISPATCH_CHANNEL).then((result) => {
             result.messages[0].attachments[0].blocks[1] =
                 NotificationHelper.emailMessage(data, true);

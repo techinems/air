@@ -41,10 +41,13 @@ app.use((req, res, next) => {
 
 app.post('/tmd_slack_notification', (req, res) => {
     notifications.normal(req, res);
+    res.status(200).send();
+
 });
 
 app.post('/tmd_slack_notification_long', (req, res) => {
     notifications.longtone(req, res);
+    res.status(200).send();
 });
 
 slackInteractions.action({type:'button'}, (payload, respond) => {
