@@ -72,6 +72,14 @@ MAX_ELAPSED_TIME: The maximum elapse time to click the responding buttons in min
 
 NAME_FORMAT: The option to select what name format used to display names when responding. Options: short, full, mention
 
+BEGIN_NORMAL_MESSAGE: The first statement of a normal dispatch/responding message. A time will posted at the end of the statement. 
+
+Ex: `RPI Ambulance dispatched on` will produce `RPI Ambulance dispatched on 2020-01-26 at 16:45:01`
+
+BEGIN_LONGTONE_MESSAGE:  The first statement of a longtone dispatch/responding message. A time will posted at the end of the statement.
+
+Ex: `Renselaer County longtone on` will produce `Renselaer County longtone on 2020-01-26 at 16:45:01`
+
 TZ: The timezone where the agency is. Ex: America/New York
 
 **Congrats!** Once completed, AIR should be good to go. Run the `npm install` and then `npm start` command to start the program. 
