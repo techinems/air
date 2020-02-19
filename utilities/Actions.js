@@ -7,6 +7,12 @@ require('dotenv').config();
 const MAX_ELAPSED_TIME = process.env.MAX_ELAPSED_TIME * 60 * 1000;
 
 class Actions extends SlackIntegration {
+    /***
+     * Add/change a user's responding status based on the button they have clicked
+     *
+     * @param {Object} payload - All the information relating to the message and button push action
+     * @param {Response} res - The response which will be sent back to Slack
+     */
     onButtonAction(payload, res) {
         try {
             const messageTime = new Date(payload.message.ts * 1000);
