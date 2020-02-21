@@ -8,7 +8,7 @@ class SlackIntegrationHelper {
      */
     static buildSectionBlock(block_id, text) {
         return {type: 'section', block_id, text: {type: 'mrkdwn', text}};
-    };
+    }
 
     /***
      * Creates a button

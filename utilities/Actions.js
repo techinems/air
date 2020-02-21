@@ -22,20 +22,23 @@ class Actions extends SlackIntegration {
                     payload.message.attachments, payload.user.id);
                 this.getSlackUser(payload.user.id).then(resp => {
                     const name = ActionHelper.getFormattedName(resp.user);
-                    let blocks = [];
                     let color = '#7CD197';
+                    let text = '';
                     if (payload.actions[0].action_id === 'statusYes') {
-                        blocks = [SlackIntegrationHelper.buildSectionBlock(
-                            payload.user.id, `*${name}* is *RESPONDING*.`)];
+                        text = `*${name}* is *RESPONDING*.`;
                     } else if (payload.actions[0].action_id === 'statusNo') {
-                        blocks = [SlackIntegrationHelper.buildSectionBlock(
-                            payload.user.id, `*${name}* is NOT RESPONDING.`)];
+                        text = `*${name}* is NOT RESPONDING.`;
                         color = '#D3D3D3';
                     }
+                    const blocks = [SlackIntegrationHelper.buildSectionBlock(
+                        payload.user.id, text)];
                     attachments.push({blocks, color});
-                    this.deleteSlackMessage(payload.container.channel_id,
-                        payload.message.ts);
-                    this.postSlackMessageMA(payload.container.channel_id, attachments);
+                    this.updateSlackMessageMA(payload.container.channel_id,
+                        payload.message.ts, attachments);
+                    this.postSlackMessage(payload.container.channel_id,
+                        [SlackIntegrationHelper.buildSectionBlock(
+                            'deletable', text)]).then(resp =>
+                        this.deleteSlackMessage(payload.container.channel_id,resp.ts));
                 });
             } else {
                 this.postSlackEphemeral(payload.container.channel_id, 'Sorry, your' +
