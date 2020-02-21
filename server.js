@@ -90,6 +90,7 @@ nodeMailin.on('validateSender', async (session, address, callback) => {
 });
 
 nodeMailin.on('message', async (connection, data) => {
+    console.log(Email.parseEmail(data));
     notifications.email(Email.parseEmail(data.text));
 });
 
