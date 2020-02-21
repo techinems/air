@@ -4,6 +4,7 @@ const VERIFICATION = process.env.VERIFICATION_TOKEN;
 
 class Verification {
     static verification(req, res, next) {
+        console.log("Verification: " + req.body.verification);
         if (req.body.verification === VERIFICATION) {
             next();
         }
