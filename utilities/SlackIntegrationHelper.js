@@ -6,9 +6,9 @@ class SlackIntegrationHelper {
      * @param {string} text - the message inside the SectionBlock
      * @returns {SectionBlock} the built SectionBlock
      */
-    static buildSectionBlock = (block_id, text) => {
+    static buildSectionBlock(block_id, text) {
         return {type: 'section', block_id, text: {type: 'mrkdwn', text}};
-    };
+    }
 
     /***
      * Creates a button
@@ -17,7 +17,7 @@ class SlackIntegrationHelper {
      * @param {string|null} style - the style of the button
      * @returns {ActionBlock} the button
      */
-    static buildButton = (action_id, text, style=null) => {
+    static buildButton(action_id, text, style=null) {
         let button = {type:'button', action_id,
             text: {type: 'plain_text', text, emoji: false}};
         if (style) {
