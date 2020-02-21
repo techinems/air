@@ -1,14 +1,16 @@
 require('dotenv').config();
 
 const REGEX = process.env.EMAIL_SPLIT_REGEX;
-const EMAIL = process.env.DISPATCH_EMAIL_ADDRESS;
+const EMAILS = process.env.DISPATCH_EMAIL_ADDRESS.toLowerCase().split('|');
 
 class Email {
     /***
-     * Parses the email and stores the extracted information into a map of keywords to email information
+     * Parses the email and stores the extracted information
+     * into a map of keywords to email information
      *
      * @param {string} message - The email message that will be parsed
-     * @returns {Map.<string,string>} A map of the keyword to information from the email message
+     * @returns {Map.<string,string>} A map of the keyword to
+     * information from the email message
      */
     static parseEmail(message) {
         const regex = new RegExp('\\s*(?:' + REGEX + ')\\s*', 'g');
@@ -21,13 +23,14 @@ class Email {
     }
 
     /***
-     * Verifies the sender address matches the one in the configuration. Returns a 530 error if it is not.
+     * Verifies the sender address matches the one in the configuration.
+     * Returns a 530 error if it is not.
      *
      * @param {string} address - Email address to check
      * @param {Function} callback - Function to respond back with
      */
     static verifySender(address, callback) {
-        if (address === EMAIL.toLowerCase()) {
+        if (EMAILS.indexOf(address) > -1) {
             callback();
         } else {
             const err = new Error('Non approved email address');
