@@ -37,8 +37,9 @@ class Actions extends SlackIntegration {
                         payload.message.ts, attachments);
                     this.postSlackMessage(payload.container.channel_id,
                         [SlackIntegrationHelper.buildSectionBlock(
-                            'deletable', text)]).then(resp =>
-                        this.deleteSlackMessage(payload.container.channel_id,resp.ts));
+                            'deletable', text)]).then(response =>
+                        this.deleteSlackMessage(payload.container.channel_id,
+                            response.ts));
                 });
             } else {
                 this.postSlackEphemeral(payload.container.channel_id, 'Sorry, your' +
