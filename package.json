@@ -18,7 +18,14 @@
   },
   "homepage": "https://github.com/rpiambulance/air#readme",
   "dependencies": {
-    "express-slack": "^1.0.11",
-    "request": "^2.88.0"
+    "@slack/client": "^5.0.2",
+    "@slack/interactive-messages": "^1.4.1",
+    "body-parser": "latest",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "node-mailin": "^2.4.0"
   }
 }
