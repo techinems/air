@@ -27,6 +27,7 @@ if (!process.env.SLACK_BOT_TOKEN || !process.env.SLACK_SIGNING_SECRET) {
 const TOKEN = process.env.SLACK_BOT_TOKEN;
 const PORT = process.env.NODE_PORT || 80;
 const SECRET = process.env.SLACK_SIGNING_SECRET;
+const API = process.env.POST_API;
 
 /***
  *
@@ -90,7 +91,10 @@ nodeMailin.on('validateSender', async (session, address, callback) => {
 });
 
 nodeMailin.on('message', async (connection, data) => {
-    console.log(Email.parseEmail(data));
-    notifications.email(Email.parseEmail(data.text));
+    const dataEmail = Email.parseEmail(data.text);
+    notifications.email(dataEmail);
+    if (API) {
+        Email.postToAPI(API, dataEmail);
+    }
 });
 
