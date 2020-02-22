@@ -1,7 +1,11 @@
+const axios = require("axios");
+const jsonwebtoken = require("jsonwebtoken");
+
 require('dotenv').config();
 
 const REGEX = process.env.EMAIL_SPLIT_REGEX;
 const EMAILS = process.env.DISPATCH_EMAIL_ADDRESS.toLowerCase().split('|');
+const API_TOKEN  = process.env.POST_API_TOKEN;
 
 class Email {
     /***
@@ -37,6 +41,17 @@ class Email {
             err.responseCode = 530;
             callback(err);
         }
+    }
+    static postToAPI(url,data) {
+        if (!API_TOKEN) {
+            console.log('An API token is necessary to POST to another api ')
+        }
+        axios({
+            url,
+            data,
+            method:"POST",
+            headers: {"Authorization":`BEARER ${jsonwebtoken.sign({timestamp: Date.now()},API_TOKEN)}`}
+        }).then();
     }
 }
 
