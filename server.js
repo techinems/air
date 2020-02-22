@@ -77,6 +77,14 @@ app.post('/tmd_slack_notification_long', (req, res) => {
 });
 
 
+
+app.post('/email',(req,res) => {
+    const data = req.body;
+    delete data["verification"];
+    notifications.email(data);
+    res.status(200).send();
+});
+
 /***
  * Set's up email to receive and process
  */
