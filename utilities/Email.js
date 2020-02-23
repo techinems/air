@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const REGEX = process.env.EMAIL_SPLIT_REGEX;
+const REGEXES = process.env.EMAIL_SPLIT_REGEX.split('||');
 const EMAILS = process.env.DISPATCH_EMAIL_ADDRESS.toLowerCase().split('|');
 
 class Email {
@@ -13,13 +13,18 @@ class Email {
      * information from the email message
      */
     static parseEmail(message) {
-        const regex = new RegExp('\\s*(?:' + REGEX + ')\\s*', 'g');
-        const data = message.trim().split(regex);
-        const result = new Map();
-        data.shift();
-        REGEX.split('|')
-            .forEach((key, i) => result[key] = data[i]);
-        return result;
+        for (const regexString of REGEXES) {
+            const regex = new RegExp('\\s*(?:' + regexString + ')\\s*', 'g');
+            const data = message.trim().split(regex);
+            const result = new Map();
+            data.shift();
+            if (data.length === 0) continue;
+            regexString.split('|')
+                .forEach((key, i) => {
+                    result[key] = data[i]
+                });
+            return result;
+        }
     }
 
     /***
