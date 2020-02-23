@@ -16,7 +16,8 @@ class Notifications extends SlackIntegration {
         if (NotificationHelper.verifyNightCrew()) {
             this.postSlackMessage(AIR_CHANNEL, NotificationHelper.nightCall(message));
             if (!DISPATCH_CHANNEL) return;
-            this.postSlackMessage(DISPATCH_CHANNEL, NotificationHelper.nightCall(message));
+            this.postSlackMessage(DISPATCH_CHANNEL,
+                NotificationHelper.nightCall(message));
         } else {
             this.postSlackMessage(AIR_CHANNEL, NotificationHelper.dayCall(message));
             if (!DISPATCH_CHANNEL) return;
@@ -33,7 +34,8 @@ class Notifications extends SlackIntegration {
     longtone(message) {
         this.postSlackMessage(AIR_CHANNEL, NotificationHelper.longtoneMessage(message));
         if (!DISPATCH_CHANNEL) return;
-        this.postSlackMessage(DISPATCH_CHANNEL, NotificationHelper.longtoneMessage(message));
+        this.postSlackMessage(DISPATCH_CHANNEL,
+            NotificationHelper.longtoneMessage(message));
     }
 
     /***

@@ -17,7 +17,8 @@ class SlackIntegration {
      * @returns {Promise<WebAPICallResult>} Promise of the message sending
      */
     postSlackMessage(channel, blocks, color='#F35A00') {
-        const msg = {channel, attachments:[{color, blocks}]};
+        const msg = {channel, attachments:[{color, blocks,
+            fallback:blocks[0].text.text}]};
         return this.web.chat.postMessage(msg);
     }
 

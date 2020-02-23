@@ -1,5 +1,5 @@
 //global packages
-const {ActionBlock, SectionBlock, WebAPICallResult, KnownBlock, MessageAttachment} = require("@slack/types");
+const {ActionBlock, SectionBlock, WebAPICallResult, KnownBlock, MessageAttachment} = require('@slack/types');
 const {createMessageAdapter} = require('@slack/interactive-messages');
 const {WebClient} = require('@slack/web-api');
 const {Verification} = require('./middleware/Verification');
@@ -65,6 +65,10 @@ app.use((req, res, next) => {
     Verification.verification(req, res, next);
 });
 
+app.use((req, res, next) => {
+    Verification.verifyMessage(req, res, next);
+});
+
 app.post('/tmd_slack_notification', (req, res) => {
     notifications.normal(req.body.dispatch);
     res.status(200).send();
@@ -75,7 +79,6 @@ app.post('/tmd_slack_notification_long', (req, res) => {
     notifications.longtone(req.body.dispatch);
     res.status(200).send();
 });
-
 
 /***
  * Set's up email to receive and process
@@ -90,7 +93,7 @@ nodeMailin.on('validateSender', async (session, address, callback) => {
 });
 
 nodeMailin.on('message', async (connection, data) => {
-    console.log(Email.parseEmail(data));
+    console.log(Email.parseEmail(data.text));
     notifications.email(Email.parseEmail(data.text));
 });
 
