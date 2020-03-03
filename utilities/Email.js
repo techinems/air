@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const REGEXES = process.env.EMAIL_SPLIT_REGEX.split('||');
+const REGEX = process.env.EMAIL_SPLIT_REGEX;
 const EMAILS = process.env.DISPATCH_EMAIL_ADDRESS.toLowerCase().split('|');
 
 class Email {
@@ -9,23 +9,21 @@ class Email {
      * into a map of keywords to email information
      *
      * @param {string} message - The email message that will be parsed
-     * @returns {Map.<string,string>} A map of the keyword to
+     * @returns {Object} A map of the keyword to
      * information from the email message
      */
     static parseEmail(message) {
-        for (const regexString of REGEXES) {
-            const regex = new RegExp('\\s*(?:' + regexString + ')\\s*', 'g');
-            const data = message.trim().split(regex);
-            const result = new Map();
-            data.shift();
-            if (data.length === 0) continue;
-            regexString.split('|')
-                .forEach((key, i) => {
-                    result[key] = data[i]
-                });
-            return result;
-        }
-    }
+        const regex = new RegExp('\\s*(?:' + REGEX + ')\\s*', 'g');
+        const data = message.trim().split(regex);
+        const result = {};
+        data.shift();
+        if (data.length === 0) return {message};
+        REGEX.split('|')
+            .forEach((key, i) => {
+                result[key] = data[i]
+            });
+        return result;
+}
 
     /***
      * Verifies the sender address matches the one in the configuration.

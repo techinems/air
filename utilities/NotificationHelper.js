@@ -86,6 +86,9 @@ class NotificationHelper {
     static emailMessage(data, dispatch=false) {
         let text = '';
         const order = dispatch ? DISPATCH_ORDER.split('|') : AIR_ORDER.split('|');
+        if ('message' in data) {
+            return SlackIntegrationHelper.buildSectionBlock('email',data['message']);
+        }
         order.forEach((key) => {
             if (data[key]) {
                 text += `${key}: ${data[key]}\n`;
