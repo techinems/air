@@ -18,8 +18,7 @@ class Actions extends SlackIntegration {
             const messageTime = new Date(payload.message.ts * 1000);
             const actionTime = new Date(payload.actions[0].action_ts * 1000);
             if ((actionTime - messageTime) < MAX_ELAPSED_TIME) {
-                const attachments = ActionHelper.removeAttachmentByBlockId(
-                    payload.message.attachments, payload.user.id);
+                const attachments = ActionHelper.removeAttachmentByBlockId(payload.message.attachments, payload.user.id);
                 this.getSlackUser(payload.user.id).then(resp => {
                     const name = ActionHelper.getFormattedName(resp.user);
                     let color = '#7CD197';
