@@ -4,6 +4,7 @@ var info = require('./var.js');
 var request = require('request');
 var slack = require('express-slack');
 const bodyParser = require('body-parser');
+const axios = require("axios");
 
 
 var air_channel = 'G6XGMATUP'; //#responding
@@ -60,10 +61,15 @@ app.post('/tmd_slack_notification', function(req, res) {
 
     if (req.body.verification == info.verification_email) {
 
+        const areOos = async () => {
+            const { data: oos } = await axios.get(`${info.oos_url}?token=${info.oos_token}`);
+            return oos == 1;
+          };
+
         var air_message = "";
         var dispatch_message = "";
 
-        if (compareTime(05, 55, "gt") && compareTime(18, 05, "lt")) {
+        if ((compareTime(05, 55, "gt") && compareTime(18, 05, "lt")) || areOos()) {
             air_message = {
                 unfurl_links: true,
                 channel: air_channel,
