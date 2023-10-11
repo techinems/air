@@ -4,6 +4,8 @@ module.exports = {
   client_id: "CLIENT-ID-HERE",
   client_secret: "CLIENT-SECRET-HERE",
   verification_email: "BEING-USED-FOR-OTHER-THINGS",
-  slash_command_token: "SLASH_COMMAND_TOKEN"
+  slash_command_token: "SLASH_COMMAND_TOKEN",
+  oos_token: "TOKEN_HERE",
+  oos_url: "url_here",
 }
 
