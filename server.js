@@ -61,8 +61,8 @@ app.post('/tmd_slack_notification', function(req, res) {
 
     if (req.body.verification == info.verification_email) {
 
-        const areOos = async () => {
-            const { data: oos } = await axios.get(`${info.oos_url}?token=${info.oos_token}`);
+        const areOos = () => {
+            const { data: oos } = axios.get(`${info.oos_url}?token=${info.oos_token}`);
             return oos == 1;
           };
 
